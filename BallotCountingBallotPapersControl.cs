@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace ECQ.ePollbook.UI
 {
     public partial class BallotCountingBallotPapersControl : Form
     {
@@ -80,6 +80,15 @@ namespace WindowsFormsApp1
             dgvBallotUsages.Columns[5].Width = 150;
             dgvBallotUsages.Columns[6].Width = 30;
             dgvBallotUsages.Columns[7].Width = 210;
+
+            dgvBallotUsages.Columns[0].ReadOnly = true;
+            dgvBallotUsages.Columns[1].ReadOnly = true;
+            dgvBallotUsages.Columns[2].ReadOnly = true;
+            dgvBallotUsages.Columns[3].ReadOnly = true;
+            dgvBallotUsages.Columns[4].ReadOnly = true;
+            dgvBallotUsages.Columns[5].ReadOnly = true;
+            dgvBallotUsages.Columns[6].ReadOnly = true;
+            dgvBallotUsages.Columns[7].ReadOnly = true;
 
 
 

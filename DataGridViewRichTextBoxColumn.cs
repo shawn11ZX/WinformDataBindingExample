@@ -94,6 +94,8 @@ namespace DataGridViewRichTextBox
             if (ctl != null)
             {
                 ctl.BackColor = cellStyle.BackColor;
+                ctl.SelectionBackColor = cellStyle.SelectionBackColor;
+
                 ctl.Dock = DockStyle.Fill;
                 // Print the content of RichTextBox to an image.
                 Size imgSize = new Size(cellSize.Width - 1, cellSize.Height - 1);
@@ -102,15 +104,15 @@ namespace DataGridViewRichTextBox
                 if (selected)
                 {
                     // Selected cell state
-                    ctl.BackColor = DataGridView.DefaultCellStyle.SelectionBackColor;
-                    ctl.ForeColor = DataGridView.DefaultCellStyle.SelectionForeColor;
+                    ctl.BackColor = cellStyle.SelectionBackColor;
+                    ctl.ForeColor = cellStyle.SelectionForeColor;
 
                     // Print image
                     rtfImg = RichTextBoxPrinter.Print(ctl, imgSize.Width, imgSize.Height);
 
                     // Restore RichTextBox
-                    ctl.BackColor = DataGridView.DefaultCellStyle.BackColor;
-                    ctl.ForeColor = DataGridView.DefaultCellStyle.ForeColor;
+                    ctl.BackColor = cellStyle.BackColor;
+                    ctl.ForeColor = cellStyle.ForeColor;
                 }
                 else
                 {
@@ -138,111 +140,6 @@ namespace DataGridViewRichTextBox
         protected override object GetFormattedValue(object value, int rowIndex, ref DataGridViewCellStyle cellStyle, TypeConverter valueTypeConverter, TypeConverter formattedValueTypeConverter, DataGridViewDataErrorContexts context)
         {
             return value;
-        }
-
-        private const byte DATAGRIDVIEWTEXTBOXCELL_ignoreNextMouseClick = 0x01;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetLeft = 3;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetRight = 4;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_horizontalTextMarginLeft = 0;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_horizontalTextMarginRight = 0;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_verticalTextOffsetTop = 2;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_verticalTextOffsetBottom = 1;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_verticalTextMarginTopWithWrapping = 1;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_verticalTextMarginTopWithoutWrapping = 2;
-        private const byte DATAGRIDVIEWTEXTBOXCELL_verticalTextMarginBottom = 1;
-
-        private Rectangle GetAdjustedEditingControlBounds(Rectangle editingControlBounds, DataGridViewCellStyle cellStyle, Image img)
-        {
-
-            
-            switch (cellStyle.Alignment)
-            {
-                case DataGridViewContentAlignment.TopLeft:
-                case DataGridViewContentAlignment.MiddleLeft:
-                case DataGridViewContentAlignment.BottomLeft:
-                    // Add 3 pixels on the left of the editing control to match non-editing text position
-                    if (this.DataGridView.RightToLeft == RightToLeft.Yes)
-                    {
-                        editingControlBounds.X += 1;
-                        editingControlBounds.Width = Math.Max(0, editingControlBounds.Width - DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetLeft - 2);
-                    }
-                    else
-                    {
-                        editingControlBounds.X += DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetLeft;
-                        editingControlBounds.Width = Math.Max(0, editingControlBounds.Width - DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetLeft - 1);
-                    }
-                    break;
-
-                case DataGridViewContentAlignment.TopCenter:
-                case DataGridViewContentAlignment.MiddleCenter:
-                case DataGridViewContentAlignment.BottomCenter:
-                    editingControlBounds.X += 1;
-                    editingControlBounds.Width = Math.Max(0, editingControlBounds.Width - 3);
-                    break;
-
-                case DataGridViewContentAlignment.TopRight:
-                case DataGridViewContentAlignment.MiddleRight:
-                case DataGridViewContentAlignment.BottomRight:
-                    // Shorten the editing control by 5 pixels to match non-editing text position
-                    if (this.DataGridView.RightToLeft == RightToLeft.Yes)
-                    {
-                        editingControlBounds.X += DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetRight - 1;
-                        editingControlBounds.Width = Math.Max(0, editingControlBounds.Width - DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetRight);
-                    }
-                    else
-                    {
-                        editingControlBounds.X += 1;
-                        editingControlBounds.Width = Math.Max(0, editingControlBounds.Width - DATAGRIDVIEWTEXTBOXCELL_horizontalTextOffsetRight - 1);
-                    }
-                    break;
-            }
-
-            switch (cellStyle.Alignment)
-            {
-                case DataGridViewContentAlignment.TopLeft:
-                case DataGridViewContentAlignment.TopCenter:
-                case DataGridViewContentAlignment.TopRight:
-                    editingControlBounds.Y += DATAGRIDVIEWTEXTBOXCELL_verticalTextOffsetTop;
-                    editingControlBounds.Height = Math.Max(0, editingControlBounds.Height - DATAGRIDVIEWTEXTBOXCELL_verticalTextOffsetTop);
-                    break;
-
-                case DataGridViewContentAlignment.MiddleLeft:
-                case DataGridViewContentAlignment.MiddleCenter:
-                case DataGridViewContentAlignment.MiddleRight:
-                    editingControlBounds.Height++;
-                    break;
-
-                case DataGridViewContentAlignment.BottomLeft:
-                case DataGridViewContentAlignment.BottomCenter:
-                case DataGridViewContentAlignment.BottomRight:
-                    editingControlBounds.Height = Math.Max(0, editingControlBounds.Height - DATAGRIDVIEWTEXTBOXCELL_verticalTextOffsetBottom);
-                    break;
-            }
-
-            if (img.Height < editingControlBounds.Height)
-            {
-                switch (cellStyle.Alignment)
-                {
-                    case DataGridViewContentAlignment.TopLeft:
-                    case DataGridViewContentAlignment.TopCenter:
-                    case DataGridViewContentAlignment.TopRight:
-                        // Single pixel move - leave it as is for now
-                        break;
-                    case DataGridViewContentAlignment.MiddleLeft:
-                    case DataGridViewContentAlignment.MiddleCenter:
-                    case DataGridViewContentAlignment.MiddleRight:
-                        editingControlBounds.Y += (editingControlBounds.Height - img.Height) / 2;
-                        break;
-                    case DataGridViewContentAlignment.BottomLeft:
-                    case DataGridViewContentAlignment.BottomCenter:
-                    case DataGridViewContentAlignment.BottomRight:
-                        editingControlBounds.Y += editingControlBounds.Height - img.Height;
-                        break;
-                }
-            }
-
-
-            return editingControlBounds;
         }
 
         protected override void Paint(Graphics graphics, Rectangle clipBounds, Rectangle cellBounds, int rowIndex, DataGridViewElementStates cellState, object value, object formattedValue, string errorText, DataGridViewCellStyle cellStyle, DataGridViewAdvancedBorderStyle advancedBorderStyle, DataGridViewPaintParts paintParts)

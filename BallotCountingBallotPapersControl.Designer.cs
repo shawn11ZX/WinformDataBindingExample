@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace ECQ.ePollbook.UI
 {
     partial class BallotCountingBallotPapersControl
     {
@@ -41,7 +41,7 @@
             this.dgvBallotUsages.AllowUserToDeleteRows = false;
             this.dgvBallotUsages.AllowUserToResizeColumns = false;
             this.dgvBallotUsages.AllowUserToResizeRows = false;
-            this.dgvBallotUsages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvBallotUsages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvBallotUsages.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvBallotUsages.BorderStyle = System.Windows.Forms.BorderStyle.None;

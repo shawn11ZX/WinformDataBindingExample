@@ -53,6 +53,7 @@
     <Compile Include="BallotCountingBallotPapersControl.Designer.cs">
       <DependentUpon>BallotCountingBallotPapersControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="BaseVM.cs" />
     <Compile Include="DataGridViewRichTextBoxColumn.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

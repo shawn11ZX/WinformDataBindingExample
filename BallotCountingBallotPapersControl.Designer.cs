@@ -28,69 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgvBallotUsages = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBallotUsages)).BeginInit();
+            this.dgvBallotRemainingOfStaff = new System.Windows.Forms.DataGridView();
+            this.dgvBallotRemainingOfBooth = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBallotRemainingOfStaff)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBallotRemainingOfBooth)).BeginInit();
             this.SuspendLayout();
             // 
-            // dgvBallotUsages
+            // dgvBallotRemainingOfStaff
             // 
-            this.dgvBallotUsages.AllowUserToAddRows = false;
-            this.dgvBallotUsages.AllowUserToDeleteRows = false;
-            this.dgvBallotUsages.AllowUserToResizeColumns = false;
-            this.dgvBallotUsages.AllowUserToResizeRows = false;
-            this.dgvBallotUsages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvBallotUsages.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            this.dgvBallotUsages.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvBallotUsages.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBallotUsages.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvBallotUsages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvBallotUsages.EnableHeadersVisualStyles = false;
-            this.dgvBallotUsages.Location = new System.Drawing.Point(30, 29);
-            this.dgvBallotUsages.Name = "dgvBallotUsages";
-            this.dgvBallotUsages.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBallotUsages.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvBallotUsages.RowHeadersVisible = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvBallotUsages.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvBallotUsages.Size = new System.Drawing.Size(977, 208);
-            this.dgvBallotUsages.TabIndex = 0;
+            this.dgvBallotRemainingOfStaff.Location = new System.Drawing.Point(30, 29);
+            this.dgvBallotRemainingOfStaff.Name = "dgvBallotRemainingOfStaff";
+            this.dgvBallotRemainingOfStaff.Size = new System.Drawing.Size(977, 208);
+            this.dgvBallotRemainingOfStaff.TabIndex = 0;
+            // 
+            // dgvBallotRemainingOfBooth
+            // 
+            this.dgvBallotRemainingOfBooth.Location = new System.Drawing.Point(33, 267);
+            this.dgvBallotRemainingOfBooth.Name = "dgvBallotRemainingOfBooth";
+            this.dgvBallotRemainingOfBooth.Size = new System.Drawing.Size(240, 150);
+            this.dgvBallotRemainingOfBooth.TabIndex = 1;
             // 
             // BallotCountingBallotPapersControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1044, 496);
-            this.Controls.Add(this.dgvBallotUsages);
+            this.Controls.Add(this.dgvBallotRemainingOfBooth);
+            this.Controls.Add(this.dgvBallotRemainingOfStaff);
             this.Name = "BallotCountingBallotPapersControl";
             this.Text = "BallotPaper";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBallotUsages)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBallotRemainingOfStaff)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBallotRemainingOfBooth)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgvBallotUsages;
+        private System.Windows.Forms.DataGridView dgvBallotRemainingOfStaff;
+        private System.Windows.Forms.DataGridView dgvBallotRemainingOfBooth;
     }
 }

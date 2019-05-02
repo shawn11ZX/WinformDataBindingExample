@@ -1,4 +1,5 @@
-﻿using System;
+﻿using com.hz.epollbook.datasource.business;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,21 +15,15 @@ namespace WindowsFormsApp1
 
     public partial class Form1 : Form
     {
-        class LabelVM : INotifyPropertyChanged
+        class LabelVM : BaseVM
         {
             private string lText_;
             public string lText { get { return lText_; } set { lText_ = value; NotifyPropertyChanged(); } }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-            {
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }
-            }
+            
         }
+
+       
 
         LabelVM textVm;
         public Form1()

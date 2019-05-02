@@ -1,8 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -146,14 +147,66 @@ namespace com.hz.epollbook.datasource.business
 
 
 
+    public enum Table3Type { All, OwnDistrict, Overprint, Handwritten }
 
-
-
-    public class BallotCountingBallotPapersBusiness
+    public interface IBallotCountingBallotPapersBusiness : INotifyPropertyChanged
     {
         
+        IList<BallotRemainStatistics> Table1List { get; }
+        IList<BallotRemainStatistics> Table2List { get; }
+        IList<BallotRemainStatistics> Table3List { get; }
+        void SelectTable3(Table3Type type);
+    }
 
-        public List<BallotRemainStatistics> Table1List = new List<BallotRemainStatistics>()
+    public class BallotCountingBallotPapersBusiness : IBallotCountingBallotPapersBusiness
+    {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public IList<BallotRemainStatistics> table1List;
+        public IList<BallotRemainStatistics> Table1List
+        {
+            get => table1List;
+            set
+            {
+                table1List = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public IList<BallotRemainStatistics> table2List;
+        public IList<BallotRemainStatistics> Table2List
+        {
+            get => table2List;
+            set
+            {
+                table2List = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public IList<BallotRemainStatistics> table3List;
+        public IList<BallotRemainStatistics> Table3List
+        {
+            get => table3List;
+            set
+            {
+                table3List = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public BallotCountingBallotPapersBusiness()
+        {
+            Table1List = new List<BallotRemainStatistics>()
             {
 
                 new BallotRemainStatistics {
@@ -178,21 +231,10 @@ namespace com.hz.epollbook.datasource.business
                     IssuedToVoters = 0,
                     ActualRemaining = 0,
                 },
-                
+
             };
 
-        public BallotRemainStatistics Table1Total = new BallotRemainStatistics
-        {
-            Type = "Total",
-            AllocatedBySupervisor = 600,
-            Spoilt = 15,
-            IssuedToVoters = 685,
-            ActualRemaining = 99,
-        };
-
-        
-
-        public List<BallotRemainStatistics> Table2List = new List<BallotRemainStatistics>()        {
+            Table2List = new List<BallotRemainStatistics>()        {
                 new BallotRemainStatistics
                 {
                     Type = "District",
@@ -208,7 +250,7 @@ namespace com.hz.epollbook.datasource.business
                     ActualRemaining = 100,
 
                     InReserveSupervisor = 100,
-                    
+
                     Discarded = 4,
                     TotalSuppliedByRO = 600
                 },
@@ -217,14 +259,51 @@ namespace com.hz.epollbook.datasource.business
                     Type = "Handwritten",
                     ActualRemaining = 0,
                     InReserveSupervisor = 100,
-                    
+
                     Discarded = 0,
                     TotalSuppliedByRO = 100
                 }
+            };
+
+            MakeAsTotal(Table1Total, Table1List);
+            Table1List.Add(Table1Total);
+
+            MakeAsTotal(Table2Total, Table2List);
+            Table2List.Add(Table2Total);
+
+            Table3List = Table3ListAll;
+        }
+
+        public void SelectTable3(Table3Type type)
+        {
+            switch(type)
+            {
+                case Table3Type.All:
+                    Table3List = Table3ListAll;
+                    break;
+                case Table3Type.OwnDistrict:
+                    Table3List = Table3ListOwnDistrict;
+                    break;
+                case Table3Type.Overprint:
+                    Table3List = Table3ListOverprint;
+                    break;
+                case Table3Type.Handwritten:
+                    Table3List = Table3ListHandwritten;
+                    break;
+            }
+        }
+        private BallotRemainStatistics Table1Total = new BallotRemainStatistics
+        {
+            Type = "Total",
+            AllocatedBySupervisor = 600,
+            Spoilt = 15,
+            IssuedToVoters = 685,
+            ActualRemaining = 99,
         };
 
+        
 
-        public BallotRemainStatistics Table2Total = new BallotRemainStatistics
+        private BallotRemainStatistics Table2Total = new BallotRemainStatistics
         {
             Type = "Total",
             ActualRemaining = 199,
@@ -233,7 +312,7 @@ namespace com.hz.epollbook.datasource.business
             TotalSuppliedByRO = 1700
         };
 
-        public List<BallotRemainStatistics> Table3ListAll = new List<BallotRemainStatistics>() {
+        private List<BallotRemainStatistics> Table3ListAll = new List<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Ordinary Issuing Point 1",
@@ -278,7 +357,7 @@ namespace com.hz.epollbook.datasource.business
                 }
         };
 
-        public List<BallotRemainStatistics> Table3ListOwnDistrict = new List<BallotRemainStatistics>() {
+        private List<BallotRemainStatistics> Table3ListOwnDistrict = new List<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Ordinary Issuing Point 1",
@@ -302,7 +381,7 @@ namespace com.hz.epollbook.datasource.business
                 },
         };
 
-        public List<BallotRemainStatistics> Table3ListOverprint = new List<BallotRemainStatistics>() {
+        private List<BallotRemainStatistics> Table3ListOverprint = new List<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Declaration Issuing Point 1",
@@ -313,12 +392,9 @@ namespace com.hz.epollbook.datasource.business
                     IssuedToVoters = 0,
                     ActualRemaining = 0,
                 }
-                
-
-
         };
 
-        public List<BallotRemainStatistics> Table3ListHandwritten = new List<BallotRemainStatistics>() {
+        private List<BallotRemainStatistics> Table3ListHandwritten = new List<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Ordinary Issuing Point 2",
@@ -331,16 +407,9 @@ namespace com.hz.epollbook.datasource.business
                 },
         };
 
-        public BallotCountingBallotPapersBusiness()
-        {
-            MakeAsTotal(Table1Total, Table1List);
-            Table1List.Add(Table1Total);
 
-            MakeAsTotal(Table2Total, Table2List);
-            Table2List.Add(Table2Total);
-        }
 
-        public void MakeAsTotal(BallotRemainStatistics total, List<BallotRemainStatistics> list)
+        private void MakeAsTotal(BallotRemainStatistics total, IList<BallotRemainStatistics> list)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -356,7 +425,7 @@ namespace com.hz.epollbook.datasource.business
             UpdateBallotReamainingOfStaffTotal(total, list);
         }
 
-        private void UpdateBallotReamainingOfStaffTotal(BallotRemainStatistics total, List<BallotRemainStatistics> list)
+        private void UpdateBallotReamainingOfStaffTotal(BallotRemainStatistics total, IList<BallotRemainStatistics> list)
         {
             total.AllocatedBySupervisor = 0;
             total.Spoilt = 0;

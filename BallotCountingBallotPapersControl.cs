@@ -16,42 +16,45 @@ namespace ECQ.ePollbook.UI
     {
         
     
-        BallotCountingBallotPapersBusiness business = new BallotCountingBallotPapersBusiness();
+        IBallotCountingBallotPapersBusiness business = new BallotCountingBallotPapersBusiness();
         public BallotCountingBallotPapersControl()
         {
             InitializeComponent();
 
-            BindingSource bindingSource1 = new BindingSource();
-            bindingSource1.DataSource = business.Table1List;
-            dgvBallotRemainStatiscsTable1.DataSource = bindingSource1;
+            dgvBallotRemainStatiscsTable1.DataBindings.Add(
+                nameof(DataGridView.DataSource),
+                business,
+                nameof(IBallotCountingBallotPapersBusiness.Table1List));
             dgvBallotRemainStatiscsTable1.DataBindingComplete += DgvBallotRemainStatisticsTable1_DataBindingComplete;
 
-            BindingSource bindingSource2 = new BindingSource();
-            bindingSource2.DataSource = business.Table2List;
-            dgvBallotRemainStatiscsTable2.DataSource = bindingSource2;
+            dgvBallotRemainStatiscsTable2.DataBindings.Add(
+                nameof(DataGridView.DataSource),
+                business,
+                nameof(IBallotCountingBallotPapersBusiness.Table2List));
             dgvBallotRemainStatiscsTable2.DataBindingComplete += DgvBallotRemainStatisticsTable2_DataBindingComplete;
 
 
+            dgvBallotRemainStatiscsTable3.DataBindings.Add(
+                nameof(DataGridView.DataSource), 
+                business, 
+                nameof(IBallotCountingBallotPapersBusiness.Table3List));
             dgvBallotRemainStatiscsTable3.DataBindingComplete += DgvBallotRemainStatisticsTable3_DataBindingComplete;
-            BindRadioButton(btnAll, dgvBallotRemainStatiscsTable3, business.Table3ListAll);
-            BindRadioButton(btnOwnDistrict, dgvBallotRemainStatiscsTable3, business.Table3ListOwnDistrict);
-            BindRadioButton(btnOverprint, dgvBallotRemainStatiscsTable3, business.Table3ListOverprint);
-            BindRadioButton(btnHandwritten, dgvBallotRemainStatiscsTable3, business.Table3ListHandwritten);
+
+            BindRadioButton(btnAll, dgvBallotRemainStatiscsTable3, Table3Type.All);
+            BindRadioButton(btnOwnDistrict, dgvBallotRemainStatiscsTable3, Table3Type.OwnDistrict);
+            BindRadioButton(btnOverprint, dgvBallotRemainStatiscsTable3, Table3Type.Overprint);
+            BindRadioButton(btnHandwritten, dgvBallotRemainStatiscsTable3, Table3Type.Handwritten);
             btnAll.Checked = false;
             btnAll.Checked = true;
         }
 
-        private void BindRadioButton(RadioButton button, Control control, List<BallotRemainStatistics> list)
+        private void BindRadioButton(RadioButton button, Control control, Table3Type type)
         {
             button.CheckedChanged += (sender, e) =>
             {
                 if (button.Checked)
                 {
-                    
-                    BindingSource bindingSource = new BindingSource();
-                    bindingSource.DataSource = list;
-                    dgvBallotRemainStatiscsTable3.DataSource = bindingSource;
-                    
+                    business.SelectTable3(type);
                 }
             };
         }
@@ -96,15 +99,16 @@ namespace ECQ.ePollbook.UI
 
         private void InitializeTable1Columns(DataGridView dgv)
         {
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.ExpectedRemaining));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.ActualRemaining));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.TotalActualRemaining));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.TotalSuppliedByRO));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.InReserveSupervisor));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.Discarded));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.DiffRemaining));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.IssuePoint));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.LastSyncedTime));
+            RemoveAllColumns(dgv, "");
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.ExpectedRemaining));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.ActualRemaining));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.TotalActualRemaining));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.TotalSuppliedByRO));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.InReserveSupervisor));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.Discarded));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.DiffRemaining));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.IssuePoint));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.LastSyncedTime));
 
             {
                 var column = dgv.Columns[nameof(BallotRemainStatistics.Type)];
@@ -201,14 +205,15 @@ namespace ECQ.ePollbook.UI
 
         private void InitializeTable2Columns(DataGridView dgv)
         {
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.AllocatedBySupervisor));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.Spoilt));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.IssuedToVoters));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.DiffRemaining));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.ExpectedRemaining));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.IssuePoint));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.LastSyncedTime));
-            dgv.Columns.Remove(nameof(BallotRemainStatistics.ExpectedRemainingAddDiff));
+            RemoveAllColumns(dgv, "");
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.AllocatedBySupervisor));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.Spoilt));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.IssuedToVoters));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.DiffRemaining));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.ExpectedRemaining));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.IssuePoint));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.LastSyncedTime));
+            RemoveAllColumns(dgv, nameof(BallotRemainStatistics.ExpectedRemainingAddDiff));
             
 
             {

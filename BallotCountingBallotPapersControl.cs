@@ -46,8 +46,24 @@ namespace ECQ.ePollbook.UI
             BindRadioButton(btnHandwritten, dgvBallotRemainStatiscsTable3, Table3Type.Handwritten);
             btnAll.Checked = false;
             btnAll.Checked = true;
+
+            tlpTab.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+
+            InitTable3Button(btnAll);
+            InitTable3Button(btnOverprint);
+            InitTable3Button(btnHandwritten);
+            InitTable3Button(btnOwnDistrict);
         }
 
+        private void InitTable3Button(RadioButton btn)
+        {
+            btn.TextAlign = ContentAlignment.MiddleCenter;
+            btn.Margin = new Padding(0);
+            btn.Padding = new Padding(0);
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(242, 220, 219);
+            btn.FlatAppearance.BorderSize = 0;
+        }
         private void BindRadioButton(RadioButton button, Control control, Table3Type type)
         {
             button.CheckedChanged += (sender, e) =>

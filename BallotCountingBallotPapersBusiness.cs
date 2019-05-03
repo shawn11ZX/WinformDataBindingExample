@@ -22,7 +22,7 @@ namespace com.hz.epollbook.datasource.business
 	\red255\green255\blue255;
 	\red0\green0\blue0;
 }
-\sb120\qc\f0\fs24 {0} \f0\fs24\cf1 {1}
+\f0\fs22 {0} \f0\fs22\cf1 {1}
 }";
 
 
@@ -206,7 +206,7 @@ namespace com.hz.epollbook.datasource.business
 
         public BallotCountingBallotPapersBusiness()
         {
-            Table1List = new List<BallotRemainStatistics>()
+            Table1List = new BindingList<BallotRemainStatistics>()
             {
 
                 new BallotRemainStatistics {
@@ -234,7 +234,7 @@ namespace com.hz.epollbook.datasource.business
 
             };
 
-            Table2List = new List<BallotRemainStatistics>()        {
+            Table2List = new BindingList<BallotRemainStatistics>()        {
                 new BallotRemainStatistics
                 {
                     Type = "District",
@@ -312,7 +312,7 @@ namespace com.hz.epollbook.datasource.business
             TotalSuppliedByRO = 1700
         };
 
-        private List<BallotRemainStatistics> Table3ListAll = new List<BallotRemainStatistics>() {
+        private BindingList<BallotRemainStatistics> Table3ListAll = new BindingList<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Ordinary Issuing Point 1",
@@ -357,7 +357,7 @@ namespace com.hz.epollbook.datasource.business
                 }
         };
 
-        private List<BallotRemainStatistics> Table3ListOwnDistrict = new List<BallotRemainStatistics>() {
+        private BindingList<BallotRemainStatistics> Table3ListOwnDistrict = new BindingList<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Ordinary Issuing Point 1",
@@ -381,7 +381,7 @@ namespace com.hz.epollbook.datasource.business
                 },
         };
 
-        private List<BallotRemainStatistics> Table3ListOverprint = new List<BallotRemainStatistics>() {
+        private BindingList<BallotRemainStatistics> Table3ListOverprint = new BindingList<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Declaration Issuing Point 1",
@@ -394,7 +394,7 @@ namespace com.hz.epollbook.datasource.business
                 }
         };
 
-        private List<BallotRemainStatistics> Table3ListHandwritten = new List<BallotRemainStatistics>() {
+        private BindingList<BallotRemainStatistics> Table3ListHandwritten = new BindingList<BallotRemainStatistics>() {
                 new BallotRemainStatistics
                 {
                     IssuePoint = "Ordinary Issuing Point 2",
@@ -409,23 +409,23 @@ namespace com.hz.epollbook.datasource.business
 
 
 
-        private void MakeAsTotal(BallotRemainStatistics total, IList<BallotRemainStatistics> list)
+        private void MakeAsTotal(BallotRemainStatistics total, IList<BallotRemainStatistics> BindingList)
         {
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < BindingList.Count; i++)
             {
-                if (list[i] != total)
+                if (BindingList[i] != total)
                 {
-                    list[i].PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) =>
+                    BindingList[i].PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) =>
                     {
-                        UpdateBallotReamainingOfStaffTotal(total, list);
+                        UpdateBallotReamainingOfStaffTotal(total, BindingList);
                     };
                 }
             }
 
-            UpdateBallotReamainingOfStaffTotal(total, list);
+            UpdateBallotReamainingOfStaffTotal(total, BindingList);
         }
 
-        private void UpdateBallotReamainingOfStaffTotal(BallotRemainStatistics total, IList<BallotRemainStatistics> list)
+        private void UpdateBallotReamainingOfStaffTotal(BallotRemainStatistics total, IList<BallotRemainStatistics> BindingList)
         {
             total.AllocatedBySupervisor = 0;
             total.Spoilt = 0;
@@ -435,14 +435,14 @@ namespace com.hz.epollbook.datasource.business
             Table2Total.Discarded = 0;
             Table2Total.TotalSuppliedByRO = 0;
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < BindingList.Count; i++)
             {
-                if (list[i] != total)
+                if (BindingList[i] != total)
                 {
-                    total.AllocatedBySupervisor += list[i].AllocatedBySupervisor;
-                    total.Spoilt += list[i].Spoilt;
-                    total.IssuedToVoters += list[i].IssuedToVoters;
-                    total.ActualRemaining += list[i].ActualRemaining;
+                    total.AllocatedBySupervisor += BindingList[i].AllocatedBySupervisor;
+                    total.Spoilt += BindingList[i].Spoilt;
+                    total.IssuedToVoters += BindingList[i].IssuedToVoters;
+                    total.ActualRemaining += BindingList[i].ActualRemaining;
                     Table2Total.InReserveSupervisor += Table2List[i].InReserveSupervisor;
                     Table2Total.Discarded += Table2List[i].Discarded;
                     Table2Total.TotalSuppliedByRO += Table2List[i].TotalSuppliedByRO;

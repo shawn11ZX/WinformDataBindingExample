@@ -87,8 +87,11 @@ namespace DataGridViewRichTextBox
             if (ctl == null)
             {
                 ctl = _editingControl;
-                ctl.Size = GetSize(rowIndex);
+                
+
                 SetRichTextBoxText(ctl, Convert.ToString(value));
+                ctl.Size = ctl.PreferredSize;
+                cellSize = ctl.Size;
             }
 
             if (ctl != null)
@@ -145,14 +148,9 @@ namespace DataGridViewRichTextBox
         protected override void Paint(Graphics graphics, Rectangle clipBounds, Rectangle cellBounds, int rowIndex, DataGridViewElementStates cellState, object value, object formattedValue, string errorText, DataGridViewCellStyle cellStyle, DataGridViewAdvancedBorderStyle advancedBorderStyle, DataGridViewPaintParts paintParts)
         {
             base.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, null, null, errorText, cellStyle, advancedBorderStyle, paintParts);
-
-            
-
             Image img = GetRtfImage(rowIndex, value, base.Selected, cellStyle);
-
-
             if (img != null)
-                graphics.DrawImage(img, cellBounds.Left, cellBounds.Top);
+                graphics.DrawImage(img, cellBounds.Left + (cellBounds.Width - img.Width) / 2, cellBounds.Top + (cellBounds.Height - img.Height) / 2);
         }
 
         #region Handlers of edit events, copyied from DataGridViewTextBoxCell

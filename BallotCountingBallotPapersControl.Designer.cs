@@ -88,6 +88,7 @@
             this.btnAll.Appearance = System.Windows.Forms.Appearance.Button;
             this.btnAll.AutoSize = true;
             this.btnAll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnAll.Location = new System.Drawing.Point(3, 3);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(204, 34);

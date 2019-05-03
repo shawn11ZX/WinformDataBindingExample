@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="BallotCountingBallotPapersBusiness.cs" />
     <Compile Include="BallotCountingBallotPapersControl.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="BallotCountingBallotPapersControl.Designer.cs">
       <DependentUpon>BallotCountingBallotPapersControl.cs</DependentUpon>

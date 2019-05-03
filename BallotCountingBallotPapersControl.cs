@@ -14,31 +14,40 @@ namespace ECQ.ePollbook.UI
 {
     public partial class BallotCountingBallotPapersControl : Form
     {
-        
-    
         IBallotCountingBallotPapersBusiness business = new BallotCountingBallotPapersBusiness();
         public BallotCountingBallotPapersControl()
         {
             InitializeComponent();
 
+            dgvBallotRemainStatiscsTable1.DataSource = new BallotRemainStatistics[] { };
             dgvBallotRemainStatiscsTable1.DataBindings.Add(
-                nameof(DataGridView.DataSource),
-                business,
-                nameof(IBallotCountingBallotPapersBusiness.Table1List));
-            dgvBallotRemainStatiscsTable1.DataBindingComplete += DgvBallotRemainStatisticsTable1_DataBindingComplete;
+                            nameof(DataGridView.DataSource),
+                            business,
+                            nameof(IBallotCountingBallotPapersBusiness.Table1List));
+            dgvBallotRemainStatiscsTable1.DataSourceChanged += DgvBallotRemainStatiscsTable1_DataSourceChanged;
+            dgvBallotRemainStatiscsTable1.CellBeginEdit += DgvBallotRemainStatiscsTable_CellBeginEdit;
+            dgvBallotRemainStatiscsTable1.CellEndEdit += DgvBallotRemainStatiscsTable_CellEndEdit;
 
+
+            dgvBallotRemainStatiscsTable2.DataSource = new BallotRemainStatistics[] { };
             dgvBallotRemainStatiscsTable2.DataBindings.Add(
                 nameof(DataGridView.DataSource),
                 business,
                 nameof(IBallotCountingBallotPapersBusiness.Table2List));
-            dgvBallotRemainStatiscsTable2.DataBindingComplete += DgvBallotRemainStatisticsTable2_DataBindingComplete;
+            dgvBallotRemainStatiscsTable2.DataSourceChanged += DgvBallotRemainStatiscsTable2_DataSourceChanged;
+            dgvBallotRemainStatiscsTable2.CellBeginEdit += DgvBallotRemainStatiscsTable_CellBeginEdit;
+            dgvBallotRemainStatiscsTable2.CellEndEdit += DgvBallotRemainStatiscsTable_CellEndEdit;
 
 
+            dgvBallotRemainStatiscsTable3.DataSource = new BallotRemainStatistics[] { };
             dgvBallotRemainStatiscsTable3.DataBindings.Add(
-                nameof(DataGridView.DataSource), 
-                business, 
+                nameof(DataGridView.DataSource),
+                business,
                 nameof(IBallotCountingBallotPapersBusiness.Table3List));
-            dgvBallotRemainStatiscsTable3.DataBindingComplete += DgvBallotRemainStatisticsTable3_DataBindingComplete;
+            dgvBallotRemainStatiscsTable3.DataSourceChanged += DgvBallotRemainStatiscsTable3_DataSourceChanged;
+            dgvBallotRemainStatiscsTable3.CellBeginEdit += DgvBallotRemainStatiscsTable_CellBeginEdit;
+            dgvBallotRemainStatiscsTable3.CellEndEdit += DgvBallotRemainStatiscsTable_CellEndEdit;
+
 
             BindRadioButton(btnAll, dgvBallotRemainStatiscsTable3, Table3Type.All);
             BindRadioButton(btnOwnDistrict, dgvBallotRemainStatiscsTable3, Table3Type.OwnDistrict);
@@ -47,13 +56,38 @@ namespace ECQ.ePollbook.UI
             btnAll.Checked = false;
             btnAll.Checked = true;
 
+         
+
             tlpTab.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
 
             InitTable3Button(btnAll);
             InitTable3Button(btnOverprint);
             InitTable3Button(btnHandwritten);
             InitTable3Button(btnOwnDistrict);
+
         }
+
+
+
+        object inEdit = false;
+        private void DgvBallotRemainStatiscsTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var dgv = sender as DataGridView;
+            var newObj = dgv[e.ColumnIndex, e.RowIndex].Value;
+            if (!newObj.Equals(inEdit))
+            {
+                
+            }
+        }
+
+        private void DgvBallotRemainStatiscsTable_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            var dgv = sender as DataGridView;
+            inEdit = dgv[e.ColumnIndex, e.RowIndex].Value;
+        }
+
+
+
 
         private void InitTable3Button(RadioButton btn)
         {
@@ -64,6 +98,8 @@ namespace ECQ.ePollbook.UI
             btn.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(242, 220, 219);
             btn.FlatAppearance.BorderSize = 0;
         }
+
+       
         private void BindRadioButton(RadioButton button, Control control, Table3Type type)
         {
             button.CheckedChanged += (sender, e) =>
@@ -75,39 +111,37 @@ namespace ECQ.ePollbook.UI
             };
         }
 
-        private void DgvBallotRemainStatisticsTable1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-        {
-            
-            InitializeDgvBallotRemainStatisticsTable1();
-            
-        }
 
-        private void DgvBallotRemainStatisticsTable2_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-        {       
-            
-            InitializeDgvBallotRemainStatisticsTable2();
-            
-        }
-
-        private void DgvBallotRemainStatisticsTable3_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        private void DgvBallotRemainStatiscsTable3_DataSourceChanged(object sender, EventArgs e)
         {
             InitializeDgvBallotRemainStatisticsTable3();
-            
+        }
+
+        private void DgvBallotRemainStatiscsTable2_DataSourceChanged(object sender, EventArgs e)
+        {
+            InitializeDgvBallotRemainStatisticsTable2();
+        }
+
+        private void DgvBallotRemainStatiscsTable1_DataSourceChanged(object sender, EventArgs e)
+        {
+            InitializeDgvBallotRemainStatisticsTable1();
         }
 
 
-        
+
+
+
         private void InitializeDgvBallotRemainStatisticsTable1()
         {
             DataGridView dgv = dgvBallotRemainStatiscsTable1;
-            
+
             // call this first, otherwise row count might not correct
             InitializeDataGridViewOverallStyle(dgv);
             InitializeTable1Columns(dgv);
 
             InitializeDataGridViewHeader(dgv);
-            
-            InitializeDataGridViewOrdinaryRow(dgv, dgv.RowCount-1);
+
+            InitializeDataGridViewOrdinaryRow(dgv, dgv.RowCount - 1);
             InitializeDataGridViewLastRow(dgv);
             InitializeDataGridViewTotalCell(dgv);
             InitializeDataGrideViewControlSize(dgv);
@@ -200,20 +234,20 @@ namespace ECQ.ePollbook.UI
             }
         }
 
-        
+
 
         private void InitializeDgvBallotRemainStatisticsTable2()
         {
             DataGridView dgv = dgvBallotRemainStatiscsTable2;
-            
+
             // call this first, otherwise row count might not correct
             InitializeDataGridViewOverallStyle(dgv);
             InitializeTable2Columns(dgv);
 
             InitializeDataGridViewHeader(dgv);
-            
 
-            InitializeDataGridViewOrdinaryRow(dgv, dgv.RowCount-1);
+
+            InitializeDataGridViewOrdinaryRow(dgv, dgv.RowCount - 1);
             InitializeDataGridViewLastRow(dgv);
             InitializeDataGridViewTotalCell(dgv);
             InitializeDataGrideViewControlSize(dgv);
@@ -230,7 +264,7 @@ namespace ECQ.ePollbook.UI
             RemoveAllColumns(dgv, nameof(BallotRemainStatistics.IssuePoint));
             RemoveAllColumns(dgv, nameof(BallotRemainStatistics.LastSyncedTime));
             RemoveAllColumns(dgv, nameof(BallotRemainStatistics.ExpectedRemainingAddDiff));
-            
+
 
             {
                 var column = dgv.Columns[nameof(BallotRemainStatistics.Type)];
@@ -263,8 +297,8 @@ namespace ECQ.ePollbook.UI
                 column.HeaderText = "In reserve (Supervisor)";
                 column.Width = 180;
                 column.ReadOnly = false;
-                MakeEditableOperator(dgv, column, dgv.RowCount-1);
-                
+                MakeEditableOperator(dgv, column, dgv.RowCount - 1);
+
             }
 
             {
@@ -283,7 +317,7 @@ namespace ECQ.ePollbook.UI
                 column.Width = 150;
                 column.ReadOnly = false;
                 MakeEditableOperator(dgv, column, dgv.RowCount - 1);
-                
+
             }
 
             {
@@ -326,7 +360,7 @@ namespace ECQ.ePollbook.UI
         private void InitializeDgvBallotRemainStatisticsTable3()
         {
             DataGridView dgv = dgvBallotRemainStatiscsTable3;
-            
+
             // call this first, otherwise row count might not correct
             InitializeDataGridViewOverallStyle(dgv);
             InitializeTable3Columns(dgv);
@@ -381,7 +415,7 @@ namespace ECQ.ePollbook.UI
                 column.HeaderText = "Allocated by Supervisor";
                 column.Width = 152;
                 column.ReadOnly = false;
-                
+
             }
 
             {
@@ -399,7 +433,7 @@ namespace ECQ.ePollbook.UI
                 column.HeaderText = "Spoiled";
                 column.Width = 150;
                 column.ReadOnly = false;
-                
+
             }
 
             {
@@ -439,7 +473,7 @@ namespace ECQ.ePollbook.UI
                 column.HeaderText = "Expected remaining(staff)";
                 column.Width = 210;
                 column.ReadOnly = true;
-                
+
             }
 
             {
@@ -451,7 +485,7 @@ namespace ECQ.ePollbook.UI
                 MakeEditableOperator(dgv, column, dgv.RowCount);
             }
 
-           
+
         }
 
         private void AddOperator(DataGridView dgv, DataGridViewColumn col, string op)
@@ -468,11 +502,13 @@ namespace ECQ.ePollbook.UI
             {
                 var editaleStyle = new DataGridViewCellStyle(col.DefaultCellStyle);
                 editaleStyle.BackColor = dgv.BackgroundColor;
-                dgv[col.Index, i].Style = editaleStyle;
-                dgv[col.Index, i].ReadOnly = false;
-            }
+                editaleStyle.SelectionBackColor = Color.FromArgb(0, 101, 179);
+                editaleStyle.SelectionForeColor = Color.FromArgb(255, 255, 255);
+                DataGridViewCell cell = dgv[col.Index, i];
+                cell.Style = editaleStyle;
+                cell.ReadOnly = false;
 
-            
+            }
         }
 
         private static void InitializeDataGridViewOverallStyle(DataGridView dgv)
@@ -481,14 +517,12 @@ namespace ECQ.ePollbook.UI
             dgv.AllowUserToDeleteRows = false;
             dgv.AllowUserToResizeColumns = false;
             dgv.AllowUserToResizeRows = false;
-            dgv.BackgroundColor = dgv.Parent.BackColor;
+            dgv.BackgroundColor = Color.White;
             dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dgv.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             dgv.RowHeadersVisible = false;
             dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            
-            
         }
 
         private static void InitializeDataGrideViewControlSize(DataGridView dgv)
@@ -508,6 +542,7 @@ namespace ECQ.ePollbook.UI
             normalRowStyle.SelectionForeColor = normalRowStyle.ForeColor;
             normalRowStyle.SelectionBackColor = normalRowStyle.BackColor;
             normalRowStyle.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Regular);
+            dgv.RowTemplate.DefaultCellStyle = normalRowStyle;
 
             for (int i = 0; i < rowCount; i++)
             {
@@ -518,26 +553,34 @@ namespace ECQ.ePollbook.UI
 
         private static void InitializeDataGridViewLastRow(DataGridView dgv)
         {
-            System.Windows.Forms.DataGridViewCellStyle lastRowStyle = new System.Windows.Forms.DataGridViewCellStyle();
-            lastRowStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            lastRowStyle.BackColor = System.Drawing.Color.FromArgb(228, 228, 228);
-            lastRowStyle.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Regular);
-            lastRowStyle.SelectionForeColor = lastRowStyle.ForeColor;
-            lastRowStyle.SelectionBackColor = lastRowStyle.BackColor;
             int rowIndex = dgv.Rows.Count - 1;
-            dgv.Rows[rowIndex].DefaultCellStyle = lastRowStyle;
-            dgv.Rows[rowIndex].Height = 34;
+            if (rowIndex >= 0)
+            {
+                System.Windows.Forms.DataGridViewCellStyle lastRowStyle = new System.Windows.Forms.DataGridViewCellStyle();
+                lastRowStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+                lastRowStyle.BackColor = System.Drawing.Color.FromArgb(228, 228, 228);
+                lastRowStyle.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Regular);
+                lastRowStyle.SelectionForeColor = lastRowStyle.ForeColor;
+                lastRowStyle.SelectionBackColor = lastRowStyle.BackColor;
+
+                dgv.Rows[rowIndex].DefaultCellStyle = lastRowStyle;
+                dgv.Rows[rowIndex].Height = 34;
+            }
         }
 
         private static void InitializeDataGridViewTotalCell(DataGridView dgv)
         {
-            DataGridViewCellStyle totalCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
-            totalCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            totalCellStyle.BackColor = System.Drawing.Color.FromArgb(228, 228, 228);
-            totalCellStyle.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
-            totalCellStyle.SelectionForeColor = totalCellStyle.ForeColor;
-            totalCellStyle.SelectionBackColor = totalCellStyle.BackColor;
-            dgv.Rows[dgv.Rows.Count - 1].Cells[0].Style = totalCellStyle;
+            int rowIndex = dgv.Rows.Count - 1;
+            if (rowIndex >= 0)
+            {
+                DataGridViewCellStyle totalCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
+                totalCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+                totalCellStyle.BackColor = System.Drawing.Color.FromArgb(228, 228, 228);
+                totalCellStyle.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+                totalCellStyle.SelectionForeColor = totalCellStyle.ForeColor;
+                totalCellStyle.SelectionBackColor = totalCellStyle.BackColor;
+                dgv.Rows[dgv.Rows.Count - 1].Cells[0].Style = totalCellStyle;
+            }
         }
 
         private static void InitializeDataGridViewHeader(DataGridView dgv)
